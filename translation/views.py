@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import TodoItem, UnmtItem
+import subprocess, os
 from subprocess import check_output, STDOUT, CalledProcessError
 # Create your views here.
 
@@ -49,20 +50,31 @@ def deleteUnmt(request, unmt_id):
 
 def translate(request):
     c = request.POST['source_sent']
-    cmd = "cd ../../seminar/iwslt_2020/"
+    cmd = r"../seminar/iwslt_2020/"
+    print(os.getcwd())
+    try:
+        os.chdir(cmd) 
+    except Error as e:
+        # os.chdir("-")
+        pass
+    print(os.getcwd())
+    cmd = r"./get_data_esen_noise_web_service.sh"
+    try:
+        check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        #os.chdir("-")
+        raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+    cwd = os.getcwd()
+    print(cwd)
+    cmd = r"python3 main.py --exp_name 'eval' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '512' --langs 'en,es'  --para_dataset 'en-es:./web_service/train.XX.50000.pth,./web_service/tun.XX.50000.pth,./web_service/test.XX.50000.pth' --para_directions 'en-es,es-en' --n_para '-1' --lambda_xe_para '1' --pretrained_emb './data/noise1/mono/all.es-en.50000.vec' --dropout '0.3' --label-smoothing '0.1' --eval_only 'True' --reload_model './web_service/iwslt_mid.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False'"
     try:
         check_output(cmd, shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
         raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
-        
-    cmd = "./get_data_esen_noise_web_service.sh"
-    try:
-        check_output(cmd, shell=True, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
-
-    cmd = "python3 main.py --exp_name 'eval' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '512' --langs 'en,es'  --para_dataset 'en-es:./web_service/train.XX.50000.pth,./web_service/tun.XX.50000.pth,./web_service/test.XX.50000.pth' --para_directions 'en-es,es-en' --n_para '-1' --lambda_xe_para '1' --pretrained_emb './data/noise1/mono/all.es-en.50000.vec' --dropout '0.3' --label-smoothing '0.1' --eval_only 'True' --reload_model './web_service/iwslt_mid.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False'"
+    
+    os.chdir("web_service")
     gen = open('gen.txt', 'r').readlines()[0]
+    os.chdir("../../../Translation-Web-Service")
     new_item = TodoItem(content = c, gen = gen)
     new_item.save()
     all_todo_items = TodoItem.objects.all()
