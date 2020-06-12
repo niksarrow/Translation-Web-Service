@@ -165,10 +165,9 @@
             </tr>
           </thead>
           <tbody>
-            {% set counter = 0 %}
             {% for todo_items in all_items reversed %}
             <tr>
-              <th scope="row">{{ counter++ }}</th>
+              <th scope="row">{{ forloop.counter }}</th>
               <td>{{ todo_items.content }}</td>
               <td>{{ todo_items.gen }}</td>
               <td>
@@ -280,10 +279,9 @@
             </tr>
           </thead>
           <tbody>
-            {% set counter = 0 %}
             {% for unmt_items in all_unmt_items reversed %}
             <tr>
-              <th scope="row">{{ counter++ }}</th>
+              <th scope="row">{{ forloop.counter }}</th>
               <td>{{ unmt_items.content }}</td>
               <td>{{ unmt_items.gen }}</td>
               <td>
