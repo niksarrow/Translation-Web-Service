@@ -113,5 +113,8 @@ def index(request):
     return render(request, 'index.html', {'all_items' : all_todo_items,'all_unmt_items' : all_unmt_items})
     # return render(request, 'index.html')
 
+def sampleText(request):
+    return render(request, 'sampleText.html')
+
 def wix(request):
     return render(request, 'wix.html')

@@ -95,13 +95,18 @@
           </div>
         </div>
       </div>
+      <form action="/sampleText/" target="_blank" method="post">{% csrf_token %}
+        <div class="rows" style="display: inline;">
+          <div class="btn" role="button">
+            <p class="alert alert-primary">Input Sentence</p>
+          </div>
+          <input class="btn btn-outline-info" type="submit" value="Don't Know Spanish? Click Here!!">
+        </div>
+      </form>
+
       <form action="/translate/" style="display: inline;" method="post">{% csrf_token %}
         <div>
           <div class=" rows">
-            <div class="btn" role="button">
-              <p class="alert alert-primary">Input Sentence</p>
-            </div>
-
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text">Spanish</span>
@@ -160,9 +165,10 @@
             </tr>
           </thead>
           <tbody>
-            {% for todo_items in all_items %}
+            {% set counter = 0 %}
+            {% for todo_items in all_items reversed %}
             <tr>
-              <th scope="row">1</th>
+              <th scope="row">{{ counter++ }}</th>
               <td>{{ todo_items.content }}</td>
               <td>{{ todo_items.gen }}</td>
               <td>
@@ -274,9 +280,10 @@
             </tr>
           </thead>
           <tbody>
-            {% for unmt_items in all_unmt_items %}
+            {% set counter = 0 %}
+            {% for unmt_items in all_unmt_items reversed %}
             <tr>
-              <th scope="row">1</th>
+              <th scope="row">{{ counter++ }}</th>
               <td>{{ unmt_items.content }}</td>
               <td>{{ unmt_items.gen }}</td>
               <td>
