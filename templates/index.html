@@ -11,7 +11,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <!-- <link href="{% static 'assets/img/favicon.png' %}" rel="icon"> -->
   <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -64,7 +64,7 @@
         <ul>
           <!-- <li class="active"><a href="index.html">Home</a></li> -->
           <li><a href="#about">Disfluency Removal + Translation</a></li>
-          <li><a href="#services">Unsupervised NMT</a></li>
+          <li><a href="#unmt">Unsupervised NMT</a></li>
           <!-- <li><a href="#portfolio">Portfolio</a></li> -->
           <li><a href="#team">Team</a></li>
           <li><a href="#footer">Contact Us</a></li>
@@ -76,14 +76,14 @@
 
   <main id="main">
 
-    <section id="about" class="about">
+    <section id="about" class="about section-bg">
 
       <div class="container">
         <div class="row">
 
           <div class="col-lg-5 col-md-6">
             <div class="about-img">
-              <img src="{% static 'assets/img/intro-bg1.jpg' %}" alt="">
+              <!-- <img src="{% static 'assets/img/intro-bg1.jpg' %}" alt=""> -->
             </div>
           </div>
 
@@ -98,50 +98,50 @@
       <form action="/translate/" style="display: inline;" method="post">{% csrf_token %}
         <div>
           <div class=" rows">
-              <div class="btn" role="button">
-                <p class="alert alert-primary">Input Sentence</p>
-              </div>
-
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Spanish</span>
-                </div>
-                <!-- <textarea class="form-control" aria-label="With textarea" name="source_sent"></textarea> -->
-                <input type="text" value="{{ source }}" class="form-control" aria-label="With textarea" name="source_sent">
-              </div>
-            </div>
-            </br>
-            <div class="rows">
-              <div class="btn" role="button">
-                <p class="alert alert-primary">Generated Sentence</p>
-              </div>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">English</span>
-                </div>
-                <input type="text" value="{{ gen }} " class="form-control" aria-label="With textarea" name="target_sent">
-                <!-- <textarea class="form-control" aria-label="With textarea" name="target_sent"></textarea> -->
-              </div>
+            <div class="btn" role="button">
+              <p class="alert alert-primary">Input Sentence</p>
             </div>
 
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Spanish</span>
+              </div>
+              <!-- <textarea class="form-control" aria-label="With textarea" name="source_sent"></textarea> -->
+              <input type="text" value="{{ source }}" class="form-control" aria-label="With textarea" name="source_sent">
+            </div>
           </div>
-          <br></br>
-          <div class="text-center">
-            <input type="submit" value="Translate" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg">
-          </div>
-
-          <!-- <input type="text" name="source_sent" value=""> -->
-          <!-- <input type="text" name="target_sent" value=""> -->
-          <!-- <input type="submit" value="Translate"> -->
-          </form>
           </br>
-          <div>
-            <div class="btn" role="button" data-toggle="collapse" href="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
-              <p class="alert alert-primary">Recent Translations</p>
-              <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+          <div class="rows">
+            <div class="btn" role="button">
+              <p class="alert alert-primary">Generated Sentence</p>
             </div>
-            <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
-            <!-- <ul>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">English</span>
+              </div>
+              <input type="text" value="{{ gen }} " class="form-control" aria-label="With textarea" name="target_sent">
+              <!-- <textarea class="form-control" aria-label="With textarea" name="target_sent"></textarea> -->
+            </div>
+          </div>
+
+        </div>
+        <br></br>
+        <div class="text-center">
+          <input type="submit" value="Translate" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg">
+        </div>
+
+        <!-- <input type="text" name="source_sent" value=""> -->
+        <!-- <input type="text" name="target_sent" value=""> -->
+        <!-- <input type="submit" value="Translate"> -->
+      </form>
+      </br>
+      <div>
+        <div class="btn" role="button" data-toggle="collapse" href="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
+          <p class="alert alert-primary">Recent Translations</p>
+          <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+        </div>
+        <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
+        <!-- <ul>
             {% for todo_items in all_items %}
             <li>{{ todo_items.content }}</li>
             <form action="/deleteTodo/{{todo_items.id}}/"
@@ -151,43 +151,157 @@
             </form>
             {% endfor %}
           </ul> -->
-            <table class="table table-striped collapse" id="collapseTable">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Source</th>
-                  <th scope="col">Generated</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for todo_items in all_items %}
-                <tr>
-                  <th scope="row">1</th>
-                  <td>{{ todo_items.content }}</td>
-                  <td>{{ todo_items.gen }}</td>
-                  <td>
-                    <form action="/deleteTodo/{{todo_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
-                      <input type="submit" value="Delete">
-                    </form>
-                  </td>
-                </tr>
-                {% endfor %}
-
-                <form action="/deleteAll/" method="post">{% csrf_token %}
-                  <input class="btn btn-outline-danger" type="submit" value="Clear History">
+        <table class="table table-striped collapse" id="collapseTable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Source</th>
+              <th scope="col">Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for todo_items in all_items %}
+            <tr>
+              <th scope="row">1</th>
+              <td>{{ todo_items.content }}</td>
+              <td>{{ todo_items.gen }}</td>
+              <td>
+                <form action="/deleteTodo/{{todo_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
+                  <input type="submit" value="Delete">
                 </form>
-              </tbody>
-            </table>
+              </td>
+            </tr>
+            {% endfor %}
 
-            <!-- <form action="/addTodo/" method="post">{% csrf_token %}
+            <form action="/deleteAll/" method="post">{% csrf_token %}
+              <input class="btn btn-outline-danger" type="submit" value="Clear History">
+            </form>
+          </tbody>
+        </table>
+
+        <!-- <form action="/addTodo/" method="post">{% csrf_token %}
             <input type="text" name="content">
             <input type="submit" value="Add">
           </form> -->
 
-            <!-- <form action="/index/" method="post">{% csrf_token %}
+        <!-- <form action="/index/" method="post">{% csrf_token %}
             <input type="submit" value="Go To Home">
           </form> -->
+      </div>
+    </section>
+
+    <!-- ======= UNMT Section ======= -->
+    <section id="unmt" class="about" background="#32a852">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-5 col-md-6">
+            <div class="about-img">
+              <img src="{% static 'assets/img/intro-bg1.jpg' %}" alt="">
+            </div>
           </div>
+
+          <div class="col-lg-7 col-md-6">
+            <div class="about-content">
+              <h2><strong>Unsupervised Neural Machine Translation</strong></h2>
+              <h5><i>Translates among Indian Lanugage Pairs</i></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form action="/translate_unmt/" style="display: inline;" method="post">{% csrf_token %}
+        <div>
+          <div class=" rows">
+            <div class="btn" role="button">
+              <p class="alert alert-primary">Input Sentence</p>
+            </div>
+
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Hindi</span>
+              </div>
+              <!-- <textarea class="form-control" aria-label="With textarea" name="source_sent"></textarea> -->
+              <input type="text" value="{{ source_unmt }}" class="form-control" aria-label="With textarea" name="source_sent_unmt">
+            </div>
+          </div>
+          </br>
+          <div class="rows">
+            <div class="btn" role="button">
+              <p class="alert alert-primary">Generated Sentence</p>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Panjabi</span>
+              </div>
+              <input type="text" value="{{ gen_unmt }} " class="form-control" aria-label="With textarea" name="target_sent_unmt">
+              <!-- <textarea class="form-control" aria-label="With textarea" name="target_sent"></textarea> -->
+            </div>
+          </div>
+
+        </div>
+        <br></br>
+        <div class="text-center">
+          <input type="submit" value="Translate" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg">
+        </div>
+
+        <!-- <input type="text" name="source_sent" value=""> -->
+        <!-- <input type="text" name="target_sent" value=""> -->
+        <!-- <input type="submit" value="Translate"> -->
+      </form>
+      </br>
+      <div>
+        <div class="btn" role="button" data-toggle="collapse" href="#collapseTable_unmt" aria-expanded="true" aria-controls="collapseTable_unmt">
+          <p class="alert alert-primary">Recent Translations</p>
+          <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+        </div>
+        <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
+        <!-- <ul>
+            {% for todo_items in all_items %}
+            <li>{{ todo_items.content }}</li>
+            <form action="/deleteTodo/{{todo_items.id}}/"
+                  style="display: inline;"
+                  method="post">{% csrf_token %}
+              <input type="submit" value="Delete">
+            </form>
+            {% endfor %}
+          </ul> -->
+        <table class="table table-striped collapse" id="collapseTable_unmt">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Source</th>
+              <th scope="col">Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for unmt_items in all_unmt_items %}
+            <tr>
+              <th scope="row">1</th>
+              <td>{{ unmt_items.content }}</td>
+              <td>{{ unmt_items.gen }}</td>
+              <td>
+                <form action="/deleteUnmt/{{unmt_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
+                  <input type="submit" value="Delete">
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+
+            <form action="/deleteAllUnmt/" method="post">{% csrf_token %}
+              <input class="btn btn-outline-danger" type="submit" value="Clear History">
+            </form>
+          </tbody>
+        </table>
+
+        <!-- <form action="/addTodo/" method="post">{% csrf_token %}
+            <input type="text" name="content">
+            <input type="submit" value="Add">
+          </form> -->
+
+        <!-- <form action="/index/" method="post">{% csrf_token %}
+            <input type="submit" value="Go To Home">
+          </form> -->
+      </div>
     </section>
 
     <!-- ======= Team Section ======= -->
@@ -314,7 +428,7 @@
                   <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#about">Disfluency Removal + Translation</a></li>
-
+                    <li><a href="#unmt">Unsupervised NMT</a></li>
                     <li><a href="#">Github Repo</a></li>
                     <!-- <li><a href="#">Terms of service</a></li>
                     <li><a href="#">Privacy policy</a></li> -->

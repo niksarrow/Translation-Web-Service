@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import TodoItem
+from .models import TodoItem, UnmtItem
 # Create your views here.
 
 def yourName(request):
@@ -29,9 +29,20 @@ def deleteAll(request):
     TodoItem.objects.all().delete()
     return HttpResponseRedirect('/index/')
 
+def deleteAllUnmt(request):
+    # c = request.POST['todo_id']
+    UnmtItem.objects.all().delete()
+    return HttpResponseRedirect('/index/')
+
 def deleteTodo(request, todo_id):
     # c = request.POST['todo_id']
     item_to_delete = TodoItem.objects.get(id=todo_id)
+    item_to_delete.delete()
+    return HttpResponseRedirect('/index/')
+
+def deleteUnmt(request, unmt_id):
+    # c = request.POST['todo_id']
+    item_to_delete = UnmtItem.objects.get(id=unmt_id)
     item_to_delete.delete()
     return HttpResponseRedirect('/index/')
 
@@ -41,11 +52,23 @@ def translate(request):
     new_item = TodoItem(content = c, gen = gen)
     new_item.save()
     all_todo_items = TodoItem.objects.all()
-    return render(request, 'index.html', {'all_items' : all_todo_items, 'gen' : gen, 'source' : c})
+    all_unmt_items = UnmtItem.objects.all()
+    return render(request, 'index.html', {'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen' : gen, 'source' : c})
+
+def translateUnmt(request):
+    c = request.POST['source_sent_unmt']
+    gen = c + " unmt"
+    # generate here
+    new_item = UnmtItem(content = c, gen = gen)
+    new_item.save()
+    all_todo_items = TodoItem.objects.all()
+    all_unmt_items = UnmtItem.objects.all()
+    return render(request, 'index.html', {'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen_unmt' : gen, 'source_unmt' : c})
 
 def index(request):
     all_todo_items = TodoItem.objects.all()
-    return render(request, 'index.html', {'all_items' : all_todo_items})
+    all_unmt_items = UnmtItem.objects.all()
+    return render(request, 'index.html', {'all_items' : all_todo_items,'all_unmt_items' : all_unmt_items})
     # return render(request, 'index.html')
 
 def wix(request):
