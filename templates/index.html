@@ -141,8 +141,8 @@
       </form>
       </br>
       <div>
-        <div class="btn" role="button" data-toggle="collapse" href="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
-          <p class="alert alert-primary">Recent Translations</p>
+        <div class="btn btn-outline-primary" role="button" data-toggle="collapse" href="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
+          <strong>Recent Translations</strong>
           <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
         </div>
         <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
@@ -165,10 +165,9 @@
             </tr>
           </thead>
           <tbody>
-            {% set counter = 0 %}
             {% for todo_items in all_items reversed %}
             <tr>
-              <th scope="row">{{ counter++ }}</th>
+              <th scope="row">{{ forloop.counter }}</th>
               <td>{{ todo_items.content }}</td>
               <td>{{ todo_items.gen }}</td>
               <td>
@@ -256,8 +255,8 @@
       </form>
       </br>
       <div>
-        <div class="btn" role="button" data-toggle="collapse" href="#collapseTable_unmt" aria-expanded="true" aria-controls="collapseTable_unmt">
-          <p class="alert alert-primary">Recent Translations</p>
+        <div class="btn btn-outline-primary"  role="button" data-toggle="collapse" href="#collapseTable_unmt" aria-expanded="true" aria-controls="collapseTable_unmt">
+          <strong>Recent Translations</strong>
           <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
         </div>
         <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
@@ -280,10 +279,9 @@
             </tr>
           </thead>
           <tbody>
-            {% set counter = 0 %}
             {% for unmt_items in all_unmt_items reversed %}
             <tr>
-              <th scope="row">{{ counter++ }}</th>
+              <th scope="row">{{ forloop.counter }}</th>
               <td>{{ unmt_items.content }}</td>
               <td>{{ unmt_items.gen }}</td>
               <td>
