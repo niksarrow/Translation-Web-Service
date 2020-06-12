@@ -4,6 +4,11 @@
 <title>Web Service</title>
 <body style="background-color:#c0c2c0">
   <h3> Disfluency Removal Spanish To English </h3>
+  <form action="/your_name/" method="post">{% csrf_token %}
+    <label for="your_name">Your name: </label>
+    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
+    <input type="submit" value="OK">
+  </form>
   <form action="/translate/" style="display: inline;" method="post">{% csrf_token %}
     <div class="column ">
             <h1 style="text-align:left;">Input Sentence</h1>
@@ -21,6 +26,10 @@
     <!-- <input type="submit" value="Translate"> -->
   </form>
   <div>
+      <div class="alert alert-primary" role="alert">
+        Recent Translations
+        <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+      </div>
       <h1 style="text-align:left;">Recent translations:</h1>
       <ul>
         {% for todo_items in all_items %}

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import  path
-from translation.views import myView, pageView, addTodo, deleteTodo, translate, wix, index
+from translation.views import myView, pageView, addTodo, deleteTodo, translate, wix, index, yourName, deleteAll
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,4 +27,6 @@ urlpatterns = [
     path('translate/', translate),
     path('index/', index),
     path('wix/', wix),
+    path('your_name/', yourName),
+    path('deleteAll/', deleteAll),
 ]

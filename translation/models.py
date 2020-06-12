@@ -4,4 +4,4 @@ from django.db import models
 # Interact with database.
 class TodoItem(models.Model):
     content = models.TextField()
-    
+    gen = models.TextField()
