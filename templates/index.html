@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-      <form action="/sampleText/" target="_blank" method="post">{% csrf_token %}
+      <form action="/sampleText/spanish/" target="_blank" method="post">{% csrf_token %}
         <div class="rows" style="display: inline;">
           <div class="btn" role="button">
             <p class="alert alert-primary">Input Sentence</p>
@@ -214,12 +214,20 @@
           </div>
         </div>
       </div>
+      <form action="/sampleText/hindi_panjabi/" target="_blank" method="post">{% csrf_token %}
+        <div class="rows" style="display: inline;">
+          <div class="btn" role="button">
+            <p class="alert alert-primary">Input Sentence</p>
+          </div>
+          <input class="btn btn-outline-info" type="submit" value="Don't Know Hindi or Panjabi? Click Here!!">
+        </div>
+      </form>
       <form action="/translate_unmt/" style="display: inline;" method="post">{% csrf_token %}
         <div>
           <div class=" rows">
-            <div class="btn" role="button">
+            <!-- <div class="btn" role="button">
               <p class="alert alert-primary">Input Sentence</p>
-            </div>
+            </div> -->
 
             <div class="input-group">
               <div class="input-group-prepend">
@@ -255,7 +263,7 @@
       </form>
       </br>
       <div>
-        <div class="btn btn-outline-primary"  role="button" data-toggle="collapse" href="#collapseTable_unmt" aria-expanded="true" aria-controls="collapseTable_unmt">
+        <div class="btn btn-outline-primary" role="button" data-toggle="collapse" href="#collapseTable_unmt" aria-expanded="true" aria-controls="collapseTable_unmt">
           <strong>Recent Translations</strong>
           <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
         </div>
@@ -439,7 +447,6 @@
                     <li><a href="#">Privacy policy</a></li> -->
                   </ul>
                 </div>
-
                 <div class="footer-links">
                   <h4>Contact Us</h4>
                   <p>
@@ -450,7 +457,6 @@
                     <strong>Email:</strong> nikhilra@cse.iitb.ac.in<br>
                   </p>
                 </div>
-
                 <div class="social-links">
                   <a href="https://twitter.com/niksarrow196" class="twitter"><i class="fa fa-twitter"></i></a>
                   <a href="https://www.facebook.com/niksarrow/" class="facebook"><i class="fa fa-facebook"></i></a>
@@ -458,7 +464,12 @@
                   <!-- <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
                   <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a> -->
                 </div>
+              </div>
 
+              <div class="col-sm-6">
+                  <form action="/pdfView/" target="_blank" method="post">{% csrf_token %}
+                    <input class="btn btn-outline-info" type="submit" value="Paper">
+                  </form>
               </div>
 
             </div>
