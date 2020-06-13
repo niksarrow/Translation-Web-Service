@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import  path
 from translation.views import myView, pageView, addTodo, deleteTodo, translate, wix, index, yourName, deleteAll
-from translation.views import translateUnmt, deleteAllUnmt, deleteUnmt, sampleText
+from translation.views import translateUnmt, deleteAllUnmt, deleteUnmt, sampleText, pdfView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -33,5 +33,6 @@ urlpatterns = [
     path('your_name/', yourName),
     path('deleteAll/', deleteAll),
     path('deleteAllUnmt/', deleteAllUnmt),
-    path('sampleText/', sampleText),
+    path('sampleText/<str:type>/', sampleText),
+    path('pdfView/', pdfView),
 ]
