@@ -29,6 +29,7 @@ urlpatterns = [
     path('translate/', translate),
     path('translate_unmt/', translateUnmt),
     path('index/', index),
+    path('', index),
     path('wix/', wix),
     path('your_name/', yourName),
     path('deleteAll/', deleteAll),
