@@ -91,7 +91,11 @@ def translateUnmt(request):
         check_output(cmd, shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
         raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
-
+    all_todo_items = TodoItem.objects.all()
+    all_unmt_items = UnmtItem.objects.all()
+    gen = "sdfDsf"
+    return render(request, 'index.html', {'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen_unmt' : gen, 'source_unmt' : c})
+    
     cmd = r"python3 main.py --exp_name 'webservice' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '512' --langs 'hi,pa'  --para_dataset 'en-es:./web_service/train.XX.tok.50000.pth,./web_service/tun.XX.tok.50000.pth,./web_service/test.XX.tok.50000.pth' --para_directions 'en-es,es-en' --n_para '-1' --lambda_xe_para '1' --pretrained_emb './data/hi-pa/mono/all.hi-pa.50000.vec' --dropout '0.3' --label-smoothing '0.1' --eval_only 'True' --reload_model './web_service/hi-pa.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False' --is_web_service 'True'"
     try:
         check_output(cmd, shell=True, stderr=subprocess.STDOUT)
