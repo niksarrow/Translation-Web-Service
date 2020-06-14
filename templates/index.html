@@ -11,7 +11,7 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <!-- <link href="{% static 'assets/img/favicon.png' %}" rel="icon"> -->
+  <link href="{% static 'assets/img/iitb_logo.png' %}" rel="icon">
   <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -56,7 +56,7 @@
 
       <div class="logo float-left">
         <!-- Uncomment below if you prefer to use an image logo -->
-        <h1 class="text-light"><a href="index.html" class="scrollto"><span>R & D</span></a></h1>
+        <h1 class="text-light"><a href="" class="scrollto"><span>R & D</span></a></h1>
         <!-- <a href="index.html" class="scrollto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a> -->
       </div>
 
@@ -369,7 +369,7 @@
               <div class="member-info">
                 <div class="member-info-content">
                   <h4>Dr. Preethi Jyothi</h4>
-                  <span>Professor</span>
+                  <span>Asst. Professor</span>
                   <!-- <div class="social">
                     <a href=""><i class="fa fa-twitter"></i></a>
                     <a href=""><i class="fa fa-facebook"></i></a>
@@ -442,7 +442,7 @@
                     <li><a href="#">Home</a></li>
                     <li><a href="#about">Disfluency Removal + Translation</a></li>
                     <li><a href="#unmt">Unsupervised NMT</a></li>
-                    <li><a href="#">Github Repo</a></li>
+                    <li><a href="https://github.com/niksarrow/cst" target="_blank">Github Repo</a></li>
                     <!-- <li><a href="#">Terms of service</a></li>
                     <li><a href="#">Privacy policy</a></li> -->
                   </ul>
@@ -450,30 +450,31 @@
                 <div class="footer-links">
                   <h4>Contact Us</h4>
                   <p>
-                    CSE <br>
+                    Department of Computer Science and Engineering,<br>
                     Indian Institute of Technology Bombay<br>
                     Mumbai, India<br>
                     <!-- <strong>Phone:</strong> +1 5589 55488 55<br> -->
-                    <strong>Email:</strong> nikhilra@cse.iitb.ac.in<br>
+                    <strong>Email:</strong> nikhilra[at]cse[dot]iitb[dot]ac[dot]in<br>
                   </p>
                 </div>
                 <div class="social-links">
-                  <a href="https://twitter.com/niksarrow196" class="twitter"><i class="fa fa-twitter"></i></a>
-                  <a href="https://www.facebook.com/niksarrow/" class="facebook"><i class="fa fa-facebook"></i></a>
-                  <a href="http://niksarrow.github.io/" class="github"><i class="fa fa-github"></i></a>
+                  <a href="https://twitter.com/niksarrow196" class="twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                  <a href="https://www.facebook.com/niksarrow/" class="facebook" target="_blank"><i class="fa fa-facebook"></i></a>
+                  <a href="http://niksarrow.github.io/" class="github" target="_blank"><i class="fa fa-github"></i></a>
                   <!-- <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
                   <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a> -->
                 </div>
               </div>
 
               <div class="col-sm-6">
-                  <form action="/pdfView/" target="_blank" method="post">{% csrf_token %}
-                    <input class="btn btn-outline-info" type="submit" value="Paper">
-                  </form>
+                <form action="/pdfView/" target="_blank" method="post">{% csrf_token %}
+                  <input class="btn btn-outline-info" type="submit" value="Paper">
+                </form>
               </div>
-
             </div>
-
+          </div>
+          <div class="col-sm-6">
+            <img src="{% static 'assets/img/iitb_logo.png' %}" class="img-fluid" alt="">
           </div>
 
           <!-- <div class="col-lg-6">

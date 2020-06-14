@@ -1,7 +1,9 @@
 <html>
+
 <head>
 </head>
 <title>Web Service</title>
+
 <body style="background-color:#c0c2c0">
   <h3> Disfluency Removal Spanish To English </h3>
   <form action="/your_name/" method="post">{% csrf_token %}
@@ -11,11 +13,11 @@
   </form>
   <form action="/translate/" style="display: inline;" method="post">{% csrf_token %}
     <div class="column ">
-            <h1 style="text-align:left;">Input Sentence</h1>
-            <textarea rows="10" cols="70" name="source_sent">
+      <h1 style="text-align:left;">Input Sentence</h1>
+      <textarea rows="10" cols="70" name="source_sent">
                 Enter the disfluent spanish sentence.
             </textarea>
-            <textarea rows="10" cols="70" name="target_sent">
+      <textarea rows="10" cols="70" name="target_sent">
                 Fluent English Translation
             </textarea>
     </div>
@@ -26,30 +28,29 @@
     <!-- <input type="submit" value="Translate"> -->
   </form>
   <div>
-      <div class="alert alert-primary" role="alert">
-        Recent Translations
-        <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
-      </div>
-      <h1 style="text-align:left;">Recent translations:</h1>
-      <ul>
-        {% for todo_items in all_items %}
-        <li>{{ todo_items.content }}</li>
-        <form action="/deleteTodo/{{todo_items.id}}/"
-              style="display: inline;"
-              method="post">{% csrf_token %}
-          <input type="submit" value="Delete">
-        </form>
-        {% endfor %}
-      </ul>
-
-      <form action="/addTodo/" method="post">{% csrf_token %}
-        <input type="text" name="content">
-        <input type="submit" value="Add">
+    <div class="alert alert-primary" role="alert">
+      Recent Translations
+      <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+    </div>
+    <h1 style="text-align:left;">Recent translations:</h1>
+    <ul>
+      {% for todo_items in all_items %}
+      <li>{{ todo_items.content }}</li>
+      <form action="/deleteTodo/{{todo_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
+        <input type="submit" value="Delete">
       </form>
+      {% endfor %}
+    </ul>
 
-      <form action="/index/" method="post">{% csrf_token %}
-        <input type="submit" value="Go To Home">
-      </form>
+    <form action="/addTodo/" method="post">{% csrf_token %}
+      <input type="text" name="content">
+      <input type="submit" value="Add">
+    </form>
+
+    <form action="/index/" method="post">{% csrf_token %}
+      <input type="submit" value="Go To Home">
+    </form>
   </div>
 </body>
+
 </html>
