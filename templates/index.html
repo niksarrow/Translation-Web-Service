@@ -56,7 +56,12 @@
 
       <div class="logo float-left">
         <!-- Uncomment below if you prefer to use an image logo -->
-        <h1 class="text-light"><a href="" class="scrollto"><span>R & D</span></a></h1>
+
+        <!-- <h1 type="submit" class="text-light"><a type="submit" class="scrollto"><span>R & D</span></a></h1> -->
+        <!-- <h1 class="text-light scrollto span"><input class="scrollto text-light" type="submit" value="R & D"></input></h1> -->
+        <form action="/index/" method="post" id="indexform">{% csrf_token %}
+          <h1 class="text-light"><a href="javascript:{}" onclick="document.getElementById('indexform').submit();" class="scrollto"><span>R & D</span></a></h1>
+        </form>
         <!-- <a href="index.html" class="scrollto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a> -->
       </div>
 
