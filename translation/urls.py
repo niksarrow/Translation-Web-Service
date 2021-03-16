@@ -22,11 +22,11 @@ from translation.views import myView, pageView, addTodo, deleteTodo, translate, 
 from translation.views import fluent_translate, translateUnmt, deleteAllUnmt, deleteUnmt, sampleText, pdfView
 from translation.views import deleteAllDC, deleteDC
 import translation.views as views
-import translation
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-     path('', include('translation.urls')),
+    #url(r'^admin/', admin.site.urls),
+    path('fluenttrans', views.fluent_translate, name='fluent_translate'),
+    path('fluenttrans/sampleText/<str:type>/', sampleText),
 ]
 
 if settings.DEBUG:

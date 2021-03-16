@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse, Http404
-from .models import TodoItem, UnmtItem
+from .models import DCItem, TodoItem, UnmtItem
 import subprocess, os
 from subprocess import check_output, STDOUT, CalledProcessError
 from django.contrib import messages
@@ -27,6 +27,11 @@ def addTodo(request):
     # save it
     # redirect the browser to /page/
 
+def deleteAllDC(request):
+    # c = request.POST['todo_id']
+    DCItem.objects.all().delete()
+    return HttpResponseRedirect('/index/')
+
 def deleteAll(request):
     # c = request.POST['todo_id']
     TodoItem.objects.all().delete()
@@ -35,6 +40,12 @@ def deleteAll(request):
 def deleteAllUnmt(request):
     # c = request.POST['todo_id']
     UnmtItem.objects.all().delete()
+    return HttpResponseRedirect('/index/')
+
+def deleteDC(request, dc_id):
+    # c = request.POST['todo_id']
+    item_to_delete = DCItem.objects.get(id=dc_id)
+    item_to_delete.delete()
     return HttpResponseRedirect('/index/')
 
 def deleteTodo(request, todo_id):
@@ -48,6 +59,52 @@ def deleteUnmt(request, unmt_id):
     item_to_delete = UnmtItem.objects.get(id=unmt_id)
     item_to_delete.delete()
     return HttpResponseRedirect('/index/')
+
+def fluent_translate(request):
+    if request.method == "POST":
+        c = request.POST['source_sent_dc']
+        cmd = r"/home/development/nikhils/temporary/IITB_speech"
+        os.chdir(cmd)
+        cmd = 'echo "{0}" > test_0.txt'.format(c)
+        os.system(cmd)
+        cmd = r"CUDA_VISIBLE_DEVICES=0 ./eval_web_service.sh"
+        
+        try:
+            check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+
+        gen = open('dev.trans_0', 'r').readlines()[0]
+        os.chdir("/home/development/nikhils/Translation-Web-Service")
+        new_item = DCItem(content = c, gen = gen)
+        new_item.save()
+        all_dc_items = DCItem.objects.all()
+        all_todo_items = TodoItem.objects.all()
+        all_unmt_items = UnmtItem.objects.all()
+        return render(request, 'index.html', {'gen_dc' : gen, 'source_dc' : c})
+    return render(request, 'index.html')
+
+def old_fluent_translate(request):
+    c = request.POST['source_sent_dc']
+    cmd = r"../temporary/IITB_speech/"
+    os.chdir(cmd)
+    cmd = 'echo "{0}" > test_0.txt'.format(c)
+    os.system(cmd)
+    cmd = r"./eval_web_service.sh"
+    try:
+        check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+
+    gen = open('dev.trans_0', 'r').readlines()[0]
+    os.chdir("../../Translation-Web-Service")
+    new_item = DCItem(content = c, gen = gen)
+    new_item.save()
+    all_dc_items = DCItem.objects.all()
+    all_todo_items = TodoItem.objects.all()
+    all_unmt_items = UnmtItem.objects.all()
+    return render(request, 'index.html', {'all_dc_items' : all_dc_items, 'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen_dc' : gen, 'source_dc' : c})
+
 
 def translate(request):
     c = request.POST['source_sent']
@@ -63,7 +120,7 @@ def translate(request):
     except subprocess.CalledProcessError as e:
         raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
 
-    cmd = r"python3 main.py --exp_name 'webservice' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '512' --langs 'en,es'  --para_dataset 'en-es:./web_service/train.XX.tok.50000.pth,./web_service/tun.XX.tok.50000.pth,./web_service/test.XX.tok.50000.pth' --para_directions 'en-es,es-en' --n_para '-1' --lambda_xe_para '1' --pretrained_emb './data/noise1/mono/all.es-en.50000.vec' --dropout '0.3' --label-smoothing '0.1' --eval_only 'True' --reload_model './web_service/iwslt_mid.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False' --is_web_service 'True'"
+    cmd = r"CUDA_VISIBLE_DEVICES=4 python3 main.py --exp_name 'webservice' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '512' --langs 'en,es'  --para_dataset 'en-es:./web_service/train.XX.tok.50000.pth,./web_service/tun.XX.tok.50000.pth,./web_service/test.XX.tok.50000.pth' --para_directions 'en-es,es-en' --n_para '-1' --lambda_xe_para '1' --pretrained_emb './data/noise1/mono/all.es-en.50000.vec' --dropout '0.3' --label-smoothing '0.1' --eval_only 'True' --reload_model './web_service/iwslt_mid.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False' --is_web_service 'True'"
     try:
         check_output(cmd, shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
@@ -74,9 +131,11 @@ def translate(request):
     os.chdir("../../../Translation-Web-Service")
     new_item = TodoItem(content = c, gen = gen)
     new_item.save()
+    all_dc_items = DCItem.objects.all()
     all_todo_items = TodoItem.objects.all()
     all_unmt_items = UnmtItem.objects.all()
-    return render(request, 'index.html', {'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen' : gen, 'source' : c})
+    return render(request, 'index.html', {'all_dc_items' : all_dc_items, 'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen' : gen, 'source' : c})
+
 
 def translateUnmt(request):
     c = request.POST['source_sent_unmt']
@@ -91,12 +150,8 @@ def translateUnmt(request):
         check_output(cmd, shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
         raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
-    all_todo_items = TodoItem.objects.all()
-    all_unmt_items = UnmtItem.objects.all()
-    # gen = "sdfDsf"
-    # return render(request, 'index.html', {'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen_unmt' : gen, 'source_unmt' : c})
 
-    cmd = r"python main.py --exp_name 'webservice' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '100' --encoder_attention_heads '10' --decoder_attention_heads '10' --langs 'hi,pa' --n_mono '-1' --mono_dataset 'hi:./data/mono_hi_pa/hi.tok.converted.60000.pth,,;pa:./data/mono_hi_pa/pa.tok.converted.60000.pth,,' --para_dataset 'hi-pa:,./web_service/tun.XX.tok.60000.pth,./web_service/test.XX.tok.60000.pth' --mono_directions 'hi,pa' --pretrained_emb './data/mono_hi_pa/all.hi-pa.60000.vec' --pretrained_out 'True' --eval_only 'True' --reload_model './web_service/unmt_hi_pa.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False' --is_web_service 'True' --lambda_xe_mono '1'"
+    cmd = r"CUDA_VISIBLE_DEVICES=4 python main.py --exp_name 'webservice' --transformer 'True' --n_enc_layers '4' --n_dec_layers '4' --share_enc '3' --share_dec '3' --share_lang_emb 'True' --share_output_emb 'True' --emb_dim '100' --encoder_attention_heads '10' --decoder_attention_heads '10' --langs 'hi,pa' --n_mono '-1' --mono_dataset 'hi:./data/mono_hi_pa/hi.tok.converted.60000.pth,,;pa:./data/mono_hi_pa/pa.tok.converted.60000.pth,,' --para_dataset 'hi-pa:,./web_service/tun.XX.tok.60000.pth,./web_service/test.XX.tok.60000.pth' --mono_directions 'hi,pa' --pretrained_emb './data/mono_hi_pa/all.hi-pa.60000.vec' --pretrained_out 'True' --eval_only 'True' --reload_model './web_service/unmt_hi_pa.pth' --reload_enc 'True' --reload_dec 'True' --group_by_size 'False' --is_web_service 'True' --lambda_xe_mono '1'"
     try:
         check_output(cmd, shell=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
@@ -108,14 +163,16 @@ def translateUnmt(request):
 
     new_item = UnmtItem(content = c, gen = gen)
     new_item.save()
+    all_dc_items = DCItem.objects.all()
     all_todo_items = TodoItem.objects.all()
     all_unmt_items = UnmtItem.objects.all()
-    return render(request, 'index.html', {'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen_unmt' : gen, 'source_unmt' : c})
+    return render(request, 'index.html', {'all_dc_items' : all_dc_items, 'all_items' : all_todo_items, 'all_unmt_items' : all_unmt_items, 'gen_unmt' : gen, 'source_unmt' : c})
 
 def index(request):
+    all_dc_items = DCItem.objects.all()
     all_todo_items = TodoItem.objects.all()
     all_unmt_items = UnmtItem.objects.all()
-    return render(request, 'index.html', {'all_items' : all_todo_items,'all_unmt_items' : all_unmt_items})
+    return render(request, 'index.html', {'all_dc_items' : all_dc_items, 'all_items' : all_todo_items,'all_unmt_items' : all_unmt_items})
     # return render(request, 'index.html')
 
 def sampleText(request, type):
@@ -124,6 +181,8 @@ def sampleText(request, type):
         file = 'sampleText.html'
     if type == 'hindi_panjabi':
         file = 'hindi_panjabi.html'
+    if type == 'english':
+        file = 'english.html'
     try:
         return render(request, file)
     except FileNotFoundError:
@@ -138,6 +197,3 @@ def pdfView(request):
         raise Http404
         # return HttpResponseRedirect("/index/")
 
-
-def wix(request):
-    return render(request, 'wix.html')
