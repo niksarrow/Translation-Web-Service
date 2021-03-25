@@ -65,7 +65,9 @@ def fluent_translate(request):
         c = request.POST['source_sent_dc']
         cmd = r"/home/development/nikhils/temporary/IITB_speech"
         os.chdir(cmd)
-        cmd = 'echo "{0}" > test_0.txt'.format(c)
+        cmd = 'echo "{0}" > test_0.raw'.format(c)
+        os.system(cmd)
+        cmd = r"/home/development/nikhils/Translation-Web-Service/preprocess_webservice.sh"
         os.system(cmd)
         cmd = r"CUDA_VISIBLE_DEVICES=0 ./eval_web_service.sh"
         

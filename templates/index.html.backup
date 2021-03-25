@@ -1717,10 +1717,10 @@ h1, h2, h3, h4, h5, h6 {
         <ul>
           <!-- <li class="active"><a href="index.html">Home</a></li> -->
           <li><a href="#dc">Disfluency Correction</a></li>
-          <!-- <li><a href="#about">Disfluency Removal + Translation</a></li> -->
-          <!-- <li><a href="#unmt">Unsupervised NMT</a></li> -->
+          <li><a href="#about">Disfluency Removal + Translation</a></li>
+          <li><a href="#unmt">Unsupervised NMT</a></li>
           <!-- <li><a href="#portfolio">Portfolio</a></li> -->
-          <!-- <li><a href="#team">Team</a></li> -->
+          <li><a href="#team">Team</a></li>
           <li><a href="#footer">Contact Us</a></li>
         </ul>
       </nav><!-- .main-nav -->
@@ -1759,9 +1759,7 @@ h1, h2, h3, h4, h5, h6 {
           <input class="btn btn-outline-info" type="submit" value="Click here for sample input!!">
         </div>
       </form>
-      
-      <!--  <form action="fluent_translate/" style="display: inline;" method="post"> -->
-      <form id="contactForm" name="sentMessage" novalidate="novalidate" form action="fluenttrans" method="post">{% csrf_token %}
+	 <form action="fluenttrans/fluent_translate/" style="display: inline;" method="post">{% csrf_token %}
         <div>
           <div class=" rows">
             <div class="input-group">
@@ -1792,25 +1790,395 @@ h1, h2, h3, h4, h5, h6 {
           <input type="submit" value="Translate" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg">
         </div>
 
+        <!-- <input type="text" name="source_sent" value=""> -->
+        <!-- <input type="text" name="target_sent" value=""> -->
+        <!-- <input type="submit" value="Translate"> -->
+      </form>
+      </br>
+      <div>
+        <div class="btn btn-outline-primary" role="button" data-toggle="collapse" href="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
+          <strong>Recent Translations</strong>
+          <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+        </div>
+        <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
+        <!-- <ul>
+            {% for todo_items in all_items %}
+            <li>{{ todo_items.content }}</li>
+            <form action="fluenttrans/deleteTodo/{{todo_items.id}}/"
+                  style="display: inline;"
+                  method="post">{% csrf_token %}
+              <input type="submit" value="Delete">
+            </form>
+            {% endfor %}
+          </ul> -->
+        <table class="table table-striped collapse" id="collapseTable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Source</th>
+              <th scope="col">Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dc_items in all_dc_items reversed %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ dc_items.content }}</td>
+              <td>{{ dc_items.gen }}</td>
+              <td>
+                <form action="fluenttrans/deleteDC/{{dc_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
+                  <input type="submit" value="Delete">
+                </form>
+              </td>
+	      </tr>
+            {% endfor %}
+
+            <form action="fluenttrans/deleteAllDC/" method="post">{% csrf_token %}
+              <input class="btn btn-outline-danger" type="submit" value="Clear History">
+            </form>
+          </tbody>
+        </table>
+
+        <!-- <form action="/addTodo/" method="post">{% csrf_token %}
+            <input type="text" name="content">
+            <input type="submit" value="Add">
+          </form> -->
+
+        <!-- <form action="/index/" method="post">{% csrf_token %}
+            <input type="submit" value="Go To Home">
+          </form> -->
+      </div>
+    </div>
+    </section>
+
+    <!-- ======= Disfluency Correction + Translation Section ======= -->
+    <section id="about" class="about section-bg">
+
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-5 col-md-6">
+            <div class="about-img">
+              <!-- <img src="{% static 'assets/img/intro-bg1.jpg' %}" alt=""> -->
+            </div>
+          </div>
+
+          <div class="col-lg-7 col-md-6">
+            <div class="about-content">
+              <h2>From Disluent To Fluent Translation</h2>
+              <h3>Translates from Disfluent Spanish to Fluent English</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form action="fluenttrans/sampleText/spanish/" target="_blank" method="post">{% csrf_token %}
+        <div class="rows" style="display: inline;">
+          <div class="btn" role="button">
+            <p class="alert alert-primary">Input Sentence</p>
+          </div>
+          <input class="btn btn-outline-info" type="submit" value="Don't Know Spanish? Click Here!!">
+        </div>
+      </form>
+
+      <form action="fluenttrans/translate/" style="display: inline;" method="post">{% csrf_token %}
+        <div>
+          <div class=" rows">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Spanish</span>
+              </div>
+              <!-- <textarea class="form-control" aria-label="With textarea" name="source_sent"></textarea> -->
+              <input type="text" value="{{ source }}" class="form-control" aria-label="With textarea" name="source_sent">
+            </div>
+          </div>
+          </br>
+          <div class="rows">
+            <div class="btn" role="button">
+              <p class="alert alert-primary">Generated Sentence</p>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">English</span>
+              </div>
+              <input type="text" value="{{ gen }} " class="form-control" aria-label="With textarea" name="target_sent">
+              <!-- <textarea class="form-control" aria-label="With textarea" name="target_sent"></textarea> -->
+            </div>
+          </div>
+
+        </div>
+        <br></br>
+        <div class="text-center">
+          <input type="submit" value="Translate" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg">
+        </div>
 
         <!-- <input type="text" name="source_sent" value=""> -->
         <!-- <input type="text" name="target_sent" value=""> -->
         <!-- <input type="submit" value="Translate"> -->
       </form>
       </br>
-      <div class="text-center">
-          <input type="button" value="Reset" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg" 
-	  onclick="location.href='http://www.cfilt.iitb.ac.in/fluenttrans/fluenttrans';"/>
-      </div>
+      <div>
+        <div class="btn btn-outline-primary" role="button" data-toggle="collapse" href="#collapseTable" aria-expanded="true" aria-controls="collapseTable">
+          <strong>Recent Translations</strong>
+          <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+        </div>
+        <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
+        <!-- <ul>
+            {% for todo_items in all_items %}
+            <li>{{ todo_items.content }}</li>
+            <form action="/deleteTodo/{{todo_items.id}}/"
+                  style="display: inline;"
+                  method="post">{% csrf_token %}
+              <input type="submit" value="Delete">
+            </form>
+            {% endfor %}
+          </ul> -->
+        <table class="table table-striped collapse" id="collapseTable">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Source</th>
+              <th scope="col">Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for todo_items in all_items reversed %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ todo_items.content }}</td>
+              <td>{{ todo_items.gen }}</td>
+              <td>
+                <form action="fluenttrans/deleteTodo/{{todo_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
+                  <input type="submit" value="Delete">
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
 
+            <form action="/fluenttrans/deleteAll/" method="post">{% csrf_token %}
+              <input class="btn btn-outline-danger" type="submit" value="Clear History">
+            </form>
+          </tbody>
+        </table>
+
+        <!-- <form action="/addTodo/" method="post">{% csrf_token %}
+            <input type="text" name="content">
+            <input type="submit" value="Add">
+          </form> -->
+
+        <!-- <form action="/index/" method="post">{% csrf_token %}
+            <input type="submit" value="Go To Home">
+          </form> -->
+      </div>
+    </section>
+
+    <!-- ======= UNMT Section ======= -->
+    <section id="unmt" class="about" background="#32a852">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-5 col-md-6">
+            <div class="about-img">
+              <img src="{% static 'assets/img/intro-bg1.jpg' %}" alt="">
+            </div>
+          </div>
+
+          <div class="col-lg-7 col-md-6">
+            <div class="about-content">
+              <h2><strong>Unsupervised Neural Machine Translation</strong></h2>
+              <h5><i>Translates among Indian Lanugage Pairs</i></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form action="fluenttrans/sampleText/hindi_panjabi/" target="_blank" method="post">{% csrf_token %}
+        <div class="rows" style="display: inline;">
+          <div class="btn" role="button">
+            <p class="alert alert-primary">Input Sentence</p>
+          </div>
+          <input class="btn btn-outline-info" type="submit" value="Don't Know Hindi or Panjabi? Click Here!!">
+        </div>
+      </form>
+      <form action="fluenttrans/translate_unmt/" style="display: inline;" method="post">{% csrf_token %}
+        <div>
+          <div class=" rows">
+            <!-- <div class="btn" role="button">
+              <p class="alert alert-primary">Input Sentence</p>
+            </div> -->
+
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Hindi</span>
+              </div>
+              <!-- <textarea class="form-control" aria-label="With textarea" name="source_sent"></textarea> -->
+              <input type="text" value="{{ source_unmt }}" class="form-control" aria-label="With textarea" name="source_sent_unmt">
+            </div>
+          </div>
+          </br>
+          <div class="rows">
+            <div class="btn" role="button">
+              <p class="alert alert-primary">Generated Sentence</p>
+            </div>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Panjabi</span>
+              </div>
+              <input type="text" value="{{ gen_unmt }} " class="form-control" aria-label="With textarea" name="target_sent_unmt">
+              <!-- <textarea class="form-control" aria-label="With textarea" name="target_sent"></textarea> -->
+            </div>
+          </div>
+
+        </div>
+        <br></br>
+        <div class="text-center">
+          <input type="submit" value="Translate" style="margin-top:auto; margin-bottom:auto;" class="btn btn-primary btn-lg">
+        </div>
+
+        <!-- <input type="text" name="source_sent" value=""> -->
+        <!-- <input type="text" name="target_sent" value=""> -->
+        <!-- <input type="submit" value="Translate"> -->
+      </form>
       </br>
       <div>
+        <div class="btn btn-outline-primary" role="button" data-toggle="collapse" href="#collapseTable_unmt" aria-expanded="true" aria-controls="collapseTable_unmt">
+          <strong>Recent Translations</strong>
+          <!-- Recent Translations<a href="#" class="alert-link">an example link</a> -->
+        </div>
+        <!-- <h2 style="text-align:left;">Recent translations:</h2> -->
+        <!-- <ul>
+            {% for todo_items in all_items %}
+            <li>{{ todo_items.content }}</li>
+            <form action="/deleteTodo/{{todo_items.id}}/"
+                  style="display: inline;"
+                  method="post">{% csrf_token %}
+              <input type="submit" value="Delete">
+            </form>
+            {% endfor %}
+          </ul> -->
+        <table class="table table-striped collapse" id="collapseTable_unmt">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Source</th>
+              <th scope="col">Generated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for unmt_items in all_unmt_items reversed %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ unmt_items.content }}</td>
+              <td>{{ unmt_items.gen }}</td>
+              <td>
+                <form action="fluenttrans/deleteUnmt/{{unmt_items.id}}/" style="display: inline;" method="post">{% csrf_token %}
+                  <input type="submit" value="Delete">
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
 
-    <!-- ======= Disfluency Correction + Translation Section ======= -->
-    <!-- ======= UNMT Section ======= -->
+            <form action="fluenttrans/deleteAllUnmt/" method="post">{% csrf_token %}
+              <input class="btn btn-outline-danger" type="submit" value="Clear History">
+            </form>
+          </tbody>
+        </table>
+
+        <!-- <form action="/addTodo/" method="post">{% csrf_token %}
+            <input type="text" name="content">
+            <input type="submit" value="Add">
+          </form> -->
+
+        <!-- <form action="/index/" method="post">{% csrf_token %}
+            <input type="submit" value="Go To Home">
+          </form> -->
+      </div>
+    </section>
 
     <!-- ======= Team Section ======= -->
-    <!-- End Team Section -->
+    <section id="team" class="team section-bg">
+      <div class="container">
+        <div class="section-header">
+          <h3>Team</h3>
+          <!-- <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p> -->
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 wow fadeInUp" onclick="location.href='https://niksarrow.netlify.app';">
+            <div class="member">
+              <img src="{% static 'assets/img/ns1.jpg' %}" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Nikhil Saini</h4>
+                  <span>Student</span>
+                  <!-- <div class="social">
+                    <a href=""><i class="fa fa-twitter"></i></a>
+                    <a href=""><i class="fa fa-facebook"></i></a>
+                    <a href=""><i class="fa fa-google-plus"></i></a>
+                    <a href=""><i class="fa fa-linkedin"></i></a>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.2s" onclick="location.href='https://www.cse.iitb.ac.in/~pjyothi/';">
+            <div class="member">
+              <img src="{% static 'assets/img/pj1.jpg' %}" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Dr. Preethi Jyothi</h4>
+                  <span>Asst. Professor</span>
+                  <!-- <div class="social">
+                    <a href=""><i class="fa fa-twitter"></i></a>
+                    <a href=""><i class="fa fa-facebook"></i></a>
+                    <a href=""><i class="fa fa-google-plus"></i></a>
+                    <a href=""><i class="fa fa-linkedin"></i></a>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s" onclick="location.href='https://www.cse.iitb.ac.in/~pb/';">
+            <div class="member">
+              <img src="{% static 'assets/img/pb.jpg' %}" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Dr. Pushpak Bhattacharyya</h4>
+                  <span>Professor</span>
+                  <!-- <div class="social">
+                    <a href=""><i class="fa fa-twitter"></i></a>
+                    <a href=""><i class="fa fa-facebook"></i></a>
+                    <a href=""><i class="fa fa-google-plus"></i></a>
+                    <a href=""><i class="fa fa-linkedin"></i></a>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+            <div class="member">
+              <img src="{% static 'assets/img/team-4.jpg' %}" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Amanda Jepson</h4>
+                  <span>Accountant</span>
+                  <div class="social">
+                    <a href=""><i class="fa fa-twitter"></i></a>
+                    <a href=""><i class="fa fa-facebook"></i></a>
+                    <a href=""><i class="fa fa-google-plus"></i></a>
+                    <a href=""><i class="fa fa-linkedin"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+
+      </div>
+    </section><!-- End Team Section -->
 
 
   </main><!-- End #main -->
@@ -1833,6 +2201,19 @@ h1, h2, h3, h4, h5, h6 {
                   <p>Translate from disfluent English to fluent English.</p>
                 </div>
 
+                <div class="footer-newsletter">
+                  <h3>Translate & Remove Disfluency</h3>
+                  <p>Translate from disfluent Spanish to fluent English.</p>
+                </div>
+
+                <div class="footer-newsletter">
+                  <h3>Unsupervised NMT</h3>
+                  <p>Translate amongst various Indian Lanugage Pairs using Unsupervised Neural Machine Translation systems.</p>
+                  <!-- <form action="" method="post">
+                    <input type="email" name="email"><input type="submit" value="Subscribe">
+                  </form> -->
+                </div>
+
               </div>
 
               <div class="col-sm-6">
@@ -1841,9 +2222,9 @@ h1, h2, h3, h4, h5, h6 {
                   <ul>
                     <li><a href="#">Home</a></li>
                     <li><a href="#dc">Disfluency Correction</a></li>
-                    <!-- <li><a href="#about">Disfluency Removal + Translation</a></li> -->
-                    <!-- <li><a href="#unmt">Unsupervised NMT</a></li> -->
-                    <!-- <li><a href="https://github.com/niksarrow/cst" target="_blank">Github Repo</a></li> -->
+                    <li><a href="#about">Disfluency Removal + Translation</a></li>
+                    <li><a href="#unmt">Unsupervised NMT</a></li>
+                    <li><a href="https://github.com/niksarrow/cst" target="_blank">Github Repo</a></li>
                     <!-- <li><a href="#">Terms of service</a></li>
                     <li><a href="#">Privacy policy</a></li> -->
                   </ul>
@@ -1868,16 +2249,16 @@ h1, h2, h3, h4, h5, h6 {
                 </div>
               </div>
 
-              <!-- <div class="col-sm-6">
+              <div class="col-sm-6">
                 <form action="fluenttrans/pdfView/" target="_blank" method="post">{% csrf_token %}
                   <input class="btn btn-outline-info" type="submit" value="Paper">
                 </form>
-              </div> -->
+              </div>
             </div>
           </div>
-          <!-- <div class="col-sm-6">
+          <div class="col-sm-6">
             <img src="{% static 'assets/img/iitb_logo.png' %}" class="img-fluid" alt="">
-          </div> -->
+          </div>
 
           <!-- <div class="col-lg-6">
 
